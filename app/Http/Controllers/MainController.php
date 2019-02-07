@@ -8,9 +8,7 @@ use App\CountryModel;
 use App\Http\Requests\UserRequest;
 use App\StreetModel;
 use App\UserModel;
-use Illuminate\Http\JsonResponse;
-use Illuminate\Http\Request;
-use PHPUnit\Framework\Constraint\Count;
+
 
 class MainController extends Controller
 {
@@ -18,9 +16,9 @@ class MainController extends Controller
     {
         $user = $userModel->getUserByFirstAndLastName($firstname, $lastname);
 
-        if(empty($user)){
-            return new JsonResponse('User firstname lastname doesn\'t exist.', 204);
-        }else{
+        if (empty($user)) {
+            return response()->json('User firstname lastname doesn\'t exist.', 204);
+        } else {
             $arr = [
                 'firstname' => $user->firstname,
                 'lastname' => $user->lastname,
@@ -28,31 +26,34 @@ class MainController extends Controller
                 'city' => $user->adress->city->name,
                 'street' => $user->adress->street->name
             ];
-            return new JsonResponse($arr, 200);
+            return response()->json($arr, 200);
         }
     }
 
     public function add(UserRequest $request, UserModel $userModel, AdressModel $adressModel, CountryModel $countryModel, CityModel $cityModel, StreetModel $streetModel)
     {
         $firstname = $request->post('firstname');
-        $lastname= $request->post('lastname');
+        $lastname = $request->post('lastname');
 
         $user = $userModel->getUserByFirstAndLastName($firstname, $lastname);
 
-        if(empty($user)){
+        if (empty($user)) {
             $country = $countryModel->getCountryByName($request->post('country'));
-            $city= $cityModel->getCityByName($request->post('country'));
-            $street = $streetModel->getStreetByName($request->post('country'));
+            $city = $cityModel->getCityByName($request->post('city'));
+            $street = $streetModel->getStreetByName($request->post('street'));
+
+            if (empty($country) || empty($city) || empty($street))
+                return response()->json('Adress country city street doesn\'t exist.', 406);
 
             $adress = $adressModel->getAdress($country->id, $city->id, $street->id);
 
-            if(empty($adress))
-                return new JsonResponse('Adress country city street doesn\'t exist.', 406);
+            if (empty($adress))
+                return response()->json('Adress country city street doesn\'t exist.', 406);
 
             $user = $userModel->setNewUser($firstname, $lastname, $adress);
-            return new JsonResponse("User $user->firstname $user->lastname created.", 201);
-        }else{
-            return new JsonResponse('User firstname lastname already exist.', 204);
+            return response()->json("User $user->firstname $user->lastname created.", 201);
+        } else {
+            return response()->json('User firstname lastname already exist.', 204);
         }
     }
 }

@@ -12,7 +12,7 @@ class CityModel extends Model
 
     public function getCityByName($name)
     {
-        return self::where('name', 'like', $name)
+        return self::where('name', 'like',$name)
             ->first();
     }
 }

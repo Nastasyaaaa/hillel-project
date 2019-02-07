@@ -11,14 +11,14 @@
 |
 */
 
-Route::get('/userinfo/get/{firstname}/{lastname}', 'MainController@get');
+Route::get('/userinfo/get/{firstname}/{lastname}/', 'MainController@get');
 Route::post('/userinfo/add', 'MainController@add');
 
 
 Route::get('/', function(){
-	return json_encode('page does`nt exists.', 404);
+	return new \Illuminate\Http\JsonResponse('page does`nt exists.', 404);
 });
 
 Route::get('/{any}', function(){
-	return json_encode('page does`nt exists.', 404);
+	return new \Illuminate\Http\JsonResponse('page does`nt exists.', 404);
 })->where('any', '(.*)');

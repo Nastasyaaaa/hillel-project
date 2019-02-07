@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class AdressModel extends Model
 {
     protected $table = 'adress';
-
     public $fillable = ['country_id', 'city_id', 'street_id'];
+    public $timestamps = false;
 
     public function country()
     {

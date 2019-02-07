@@ -7,8 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 class UserModel extends Model
 {
     protected $table = 'user';
-
     public $fillable = ['firstname', 'lastname', 'adress_id'];
+    public $timestamps = false;
 
     public function adress()
     {
@@ -32,9 +32,4 @@ class UserModel extends Model
             ->first();
     }
 
-    public function isNameUnique($firstname, $lastname)
-    {
-        $res = $this->getUserByFirstAndLastName($firstname, $lastname);
-        return empty($res) ? true : false;
-    }
 }

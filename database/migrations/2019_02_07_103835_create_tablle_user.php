@@ -20,7 +20,8 @@ class CreateTablleUser extends Migration
             $table->integer('adress_id')->unsigned();
 
             $table->foreign('adress_id')
-                ->references('id')->on('adress');
+                ->references('id')->on('adress')
+                ->onDelete('cascade');
         });
     }
 

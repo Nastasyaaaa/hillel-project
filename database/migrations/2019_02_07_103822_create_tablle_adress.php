@@ -20,13 +20,18 @@ class CreateTablleAdress extends Migration
             $table->integer('street_id')->unsigned();
 
             $table->foreign('country_id')
-                ->references('id')->on('country');
+                ->references('id')->on('country')
+                ->onDelete('cascade');
 
             $table->foreign('city_id')
-                ->references('id')->on('city');
+                ->references('id')->on('city')
+                ->onDelete('cascade');
+
 
             $table->foreign('street_id')
-                ->references('id')->on('street');
+                ->references('id')->on('street')
+                ->onDelete('cascade');
+
         });
     }
 
